@@ -6,7 +6,7 @@ from pathlib import Path
 from openpyxl import Workbook, load_workbook
 
 sys.path.insert(0, str(Path(__file__).parent))
-from scrape import from_html, from_json, load_state, norm_date, save_state, write_report
+from scrape import from_html, from_json, load_state, norm_date, save_state, scrape, write_report
 
 COMPANIES = [{"co": "우리자산신탁"}, {"co": "하나자산신탁"}]
 
@@ -49,6 +49,29 @@ def test_report_appends_column_per_date(tmp="/tmp/tm_selfcheck.xlsx"):
     assert ws.cell(row=2, column=2).value == "최초수집: A"
     assert ws.cell(row=3, column=3).value == "신규공시: B"
     assert wb2["_state"].sheet_state == "hidden"
+
+
+def test_kofia_fallback_when_site_has_no_url():
+    companies = [{"cd": "A16004", "co": "교보자산신탁", "mgmt": "", "status": "도메인 다운"}]
+    calls = []
+
+    def stub(code, cfg):
+        calls.append((code, cfg.get("sectorCode")))
+        return "2026년 반기 경영공시", "2026-09-15"
+
+    got = scrape(companies, {"sectorCode": "160"}, kofia_fetcher=stub)
+    assert calls == [("A16004", "160")], calls
+    assert got["교보자산신탁"] == {"title": "2026년 반기 경영공시", "posted": "2026-09-15", "via": "KOFIA"}
+
+
+def test_error_records_both_failures():
+    companies = [{"cd": "A16004", "co": "교보자산신탁", "mgmt": "", "status": "도메인 다운"}]
+
+    def stub(code, cfg):
+        raise ValueError("KOFIA payload 미설정")
+
+    err = scrape(companies, {}, kofia_fetcher=stub)["교보자산신탁"]["error"]
+    assert "도메인 다운" in err and "KOFIA" in err, err
 
 
 if __name__ == "__main__":

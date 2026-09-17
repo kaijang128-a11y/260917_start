@@ -75,18 +75,38 @@ def fetch(url):
     return found
 
 
-def scrape(companies):
+def fetch_kofia(code, cfg):
+    """KOFIA DIS 경영공시에서 회사코드(cd) 기준 최신 항목."""
+    template = cfg.get("payload")
+    if not template:
+        raise ValueError("KOFIA payload 미설정 — companies.json의 kofia.payload 필요")
+    body = template.replace("{code}", code).replace("{sector}", cfg.get("sectorCode", ""))
+    resp = requests.post(cfg["api"], data=body.encode("utf-8"), timeout=30,
+                         headers={**UA, "Content-Type": "application/xml; charset=utf-8"})
+    resp.raise_for_status()
+    found = from_html(resp.text)
+    if not found:
+        raise ValueError("KOFIA 응답에서 제목/날짜를 찾지 못함")
+    return found
+
+
+def scrape(companies, kofia_cfg, kofia_fetcher=fetch_kofia):
     results = {}
     for c in companies:
         url = c.get("mgmt") or ""
-        if not url:
-            results[c["co"]] = {"error": c.get("status", "수집 URL 없음")}
-            continue
         try:
+            if not url:
+                raise ValueError(c.get("status", "수집 URL 없음"))
             title, posted = fetch(url)
             results[c["co"]] = {"title": title, "posted": posted}
+            continue
         except Exception as exc:
-            results[c["co"]] = {"error": f"{type(exc).__name__}: {exc}"}
+            primary_err = f"{type(exc).__name__}: {exc}"
+        try:
+            title, posted = kofia_fetcher(c["cd"], kofia_cfg)
+            results[c["co"]] = {"title": title, "posted": posted, "via": "KOFIA"}
+        except Exception as exc:
+            results[c["co"]] = {"error": f"{primary_err} / KOFIA: {type(exc).__name__}: {exc}"}
     return results
 
 
@@ -130,7 +150,8 @@ def main():
     ap.add_argument("--companies", default=str(HERE / "companies.json"))
     args = ap.parse_args()
 
-    companies = json.loads(Path(args.companies).read_text(encoding="utf-8"))["companies"]
+    source = json.loads(Path(args.companies).read_text(encoding="utf-8"))
+    companies, kofia_cfg = source["companies"], source.get("kofia", {})
     today = date.today().isoformat()
 
     if args.workbook and Path(args.workbook).exists():
@@ -140,7 +161,7 @@ def main():
         wb.remove(wb.active)
     previous = load_state(wb)
 
-    results = scrape(companies)
+    results = scrape(companies, kofia_cfg)
     notes, changed, errors = {}, [], []
     for co, res in results.items():
         if "error" in res:
@@ -148,7 +169,8 @@ def main():
             errors.append(co)
         elif previous.get(co, {}).get("title") != res["title"]:
             first_run = co not in previous
-            notes[co] = ("최초수집: " if first_run else "신규공시: ") + res["title"][:120]
+            source_tag = " (KOFIA)" if res.get("via") else ""
+            notes[co] = ("최초수집: " if first_run else "신규공시: ") + res["title"][:120] + source_tag
             if not first_run:
                 changed.append(co)
 
