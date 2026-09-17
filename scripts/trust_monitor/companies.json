@@ -1,0 +1,137 @@
+{
+  "generatedAt": "2026-09-17",
+  "kofia": {
+    "web": "https://dis.kofia.or.kr/",
+    "api": "https://dis.kofia.or.kr/proframeWeb/XMLSERVICES/",
+    "fileDownload": "https://disdown.kofia.or.kr/COMFSFileDownload.jsp",
+    "sectorCode": "160"
+  },
+  "companies": [
+    {
+      "cd": "A16001",
+      "co": "우리자산신탁",
+      "human": "https://www.wooriat.com/companyinfo/news?menuCd=M&typeCd=02",
+      "mgmt": "https://www.wooriat.com/companyinfo/news?menuCd=M&typeCd=02",
+      "occ": "https://www.wooriat.com/companyinfo/news?menuCd=M&typeCd=01",
+      "type": "정적 HTML",
+      "status": "정상"
+    },
+    {
+      "cd": "A16002",
+      "co": "하나자산신탁",
+      "human": "https://www.hanatrust.com/ko/disclosure/management",
+      "mgmt": "https://www.hanatrust.com/ko/disclosure/management",
+      "occ": "https://www.hanatrust.com/ko/disclosure/condition",
+      "type": "SSR HTML",
+      "status": "정상"
+    },
+    {
+      "cd": "A16003",
+      "co": "대한토지신탁",
+      "human": "https://www.reitpia.com/community/02.php?t=5",
+      "mgmt": "https://www.reitpia.com/community/02.php?t=5",
+      "occ": "https://www.reitpia.com/community/02.php?t=7",
+      "type": "정적 HTML",
+      "status": "정상(간헐적 fetch 실패)"
+    },
+    {
+      "cd": "A16004",
+      "co": "교보자산신탁",
+      "human": "https://www.kyobotrust.co.kr/",
+      "mgmt": "",
+      "occ": "",
+      "type": "-",
+      "status": "★ 도메인 다운 → KOFIA로만 수집"
+    },
+    {
+      "cd": "A16005",
+      "co": "신한자산신탁",
+      "human": "https://shinhantrust.kr/company/public-information?category=MANAGEMENT",
+      "mgmt": "https://shinhantrust.kr/api/disclosure?page=0&type=MANAGEMENT",
+      "occ": "https://shinhantrust.kr/api/disclosure?page=0&type=MATERIAL",
+      "type": "REST JSON API",
+      "status": "정상"
+    },
+    {
+      "cd": "A16006",
+      "co": "코람코자산신탁",
+      "human": "https://www.koramco.com/ko/bupubilcList?page=1",
+      "mgmt": "https://www.koramco.com/ko/bupubilcList?page=1",
+      "occ": "(통합 게시판)",
+      "type": "SPA",
+      "status": "정상"
+    },
+    {
+      "cd": "A16007",
+      "co": "한국자산신탁",
+      "human": "https://www.kait.com/management-disclosure/",
+      "mgmt": "https://www.kait.com/management-disclosure/",
+      "occ": "https://www.kait.com/occasional-disclosure/",
+      "type": "WP KBoard 정적",
+      "status": "정상(간헐적 fetch 실패)"
+    },
+    {
+      "cd": "A16008",
+      "co": "한국토지신탁",
+      "human": "https://www.koreit.co.kr/ir-pr-center/management/sales-report",
+      "mgmt": "POST https://www.koreit.co.kr/api/anonymousbizservice/execute",
+      "occ": "(동일 API, 보드코드 KRTCM101)",
+      "type": "SPA + POST API",
+      "status": "정상(첨부 PDF 직링크 미해석)"
+    },
+    {
+      "cd": "A16009",
+      "co": "케이비부동산신탁",
+      "human": "https://kbret.co.kr/irpr",
+      "mgmt": "",
+      "occ": "",
+      "type": "-",
+      "status": "★ 도메인 다운 → KOFIA로만 수집"
+    },
+    {
+      "cd": "A16010",
+      "co": "무궁화신탁",
+      "human": "http://mghat.com/company/disclosure/list.do",
+      "mgmt": "http://mghat.com/company/disclosure/list.do",
+      "occ": "(통합 게시판)",
+      "type": "정적 HTML",
+      "status": "정상"
+    },
+    {
+      "cd": "A16011",
+      "co": "코리아신탁",
+      "human": "https://www.ktrust.co.kr/index.html?pages=about&subs=about03&state=1",
+      "mgmt": "https://www.ktrust.co.kr/index.html?pages=about&subs=about03&state=1",
+      "occ": "https://www.ktrust.co.kr/index.html?pages=about&subs=about03&state=3",
+      "type": "정적 HTML",
+      "status": "정상"
+    },
+    {
+      "cd": "A16012",
+      "co": "대신자산신탁",
+      "human": "https://trust.daishin.com/public_1",
+      "mgmt": "https://trust.daishin.com/public_1",
+      "occ": "https://trust.daishin.com/public_3",
+      "type": "그누보드 정적",
+      "status": "정상"
+    },
+    {
+      "cd": "A16013",
+      "co": "한국투자부동산신탁",
+      "human": "https://trust.koreainvestment.com/disclosure/status",
+      "mgmt": "https://kitrust.com/api/v1/posts?page=0&size=20&postType=DISCLOSURE&type=MANAGEMENT_DISCLOSURE",
+      "occ": "https://kitrust.com/api/v1/posts?page=0&size=20&postType=DISCLOSURE&type=BUSINESS_STATUS_DISCLOSURE",
+      "type": "REST JSON API",
+      "status": "정상"
+    },
+    {
+      "cd": "A16014",
+      "co": "신영부동산신탁",
+      "human": "http://shinyoungret.com/?pages=about&subs=sub05&tab=tab01",
+      "mgmt": "http://shinyoungret.com/?pages=about&subs=sub05&tab=tab01",
+      "occ": "http://shinyoungret.com/?pages=about&subs=sub05&tab=tab02",
+      "type": "정적 HTML",
+      "status": "정상"
+    }
+  ]
+}
